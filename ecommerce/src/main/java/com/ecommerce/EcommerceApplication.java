@@ -1,9 +1,16 @@
-package com.ecommerce.ecommerce;
+package com.ecommerce;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages =
+							"com.ecommerce.controllers, " +
+							"com.ecommerce.daos, " +
+							"com.ecommerce.exceptions, " +
+							"com.ecommerce.models, " +
+							"com.ecommerce.services"
+					)
+
 public class EcommerceApplication {
 
 	public static void main(String[] args) {
