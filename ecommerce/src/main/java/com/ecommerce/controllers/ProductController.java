@@ -19,7 +19,7 @@ public class ProductController {
         this.productService = productService;
     }
 
-    @GetMapping
+    @GetMapping(value = "/all")
     public ResponseEntity<List<Product>> getProducts() {
         System.out.println("Get products endpoint hit");
         return ResponseEntity.ok(productService.findAll());

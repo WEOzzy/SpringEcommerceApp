@@ -36,7 +36,6 @@ public class AuthController {
     @PostMapping(value = "/login")
     public ResponseEntity<User> login(@RequestBody AuthUser authUser) {
         System.out.println("Login endpoint hit");
-        //User user = new User();
 
         User user = authService.login(authUser);
         if (user == null) {
