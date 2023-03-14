@@ -1,5 +1,6 @@
 package com.ecommerce.controllers;
 
+import com.ecommerce.models.AuthUser;
 import com.ecommerce.models.User;
 import com.ecommerce.services.AuthService;
 import org.springframework.http.HttpStatus;
@@ -30,5 +31,18 @@ public class AuthController {
         );
 
         return ResponseEntity.status(HttpStatus.CREATED).body(authService.register(newUser));
+    }
+
+    @PostMapping(value = "/login")
+    public ResponseEntity<User> login(@RequestBody AuthUser authUser) {
+        System.out.println("Login endpoint hit");
+        //User user = new User();
+
+        User user = authService.login(authUser);
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+        } else {
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body(user);
+        }
     }
 }
