@@ -1,6 +1,7 @@
 package com.ecommerce.services;
 
 import com.ecommerce.daos.UserDAO;
+import com.ecommerce.exceptions.InvalidLoginException;
 import com.ecommerce.models.AuthUser;
 import com.ecommerce.models.User;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,7 @@ public class AuthService {
         this.userDAO = userDAO;
     }
     public User register(User user) {
+        // TODO: prevent duplicate email registration
         return userDAO.save(user);
     }
 
@@ -24,11 +26,12 @@ public class AuthService {
         if (!user.isPresent()) {
             //throw username not found exception
             System.out.println("user not found");
+            throw new InvalidLoginException("Invalid login credentials");
         } else {
             if (authUser.getPassword().equals(user.get().getPassword())) {
                 return user.get();
             }
         }
-        return null; // returns null if password is incorrect, will replace with an exception
+        throw new InvalidLoginException("Invalid login credentials");
     }
 }

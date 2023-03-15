@@ -1,5 +1,6 @@
 package com.ecommerce.controllers;
 
+import com.ecommerce.exceptions.InvalidLoginException;
 import com.ecommerce.models.AuthUser;
 import com.ecommerce.models.User;
 import com.ecommerce.services.AuthService;
@@ -37,11 +38,11 @@ public class AuthController {
     public ResponseEntity<User> login(@RequestBody AuthUser authUser) {
         System.out.println("Login endpoint hit");
 
-        User user = authService.login(authUser);
-        if (user == null) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
-        } else {
+        try {
+            User user = authService.login(authUser);
             return ResponseEntity.status(HttpStatus.ACCEPTED).body(user);
+        } catch (InvalidLoginException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
         }
     }
 }

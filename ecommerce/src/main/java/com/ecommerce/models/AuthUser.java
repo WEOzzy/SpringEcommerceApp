@@ -4,7 +4,7 @@ public class AuthUser {
     private String email;
     private String password;
 
-    AuthUser(String email, String password) {
+    public AuthUser(String email, String password) {
         this.email = email;
         this.password = password;
     }
