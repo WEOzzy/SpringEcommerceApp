@@ -4,6 +4,7 @@ import com.ecommerce.exceptions.InvalidLoginException;
 import com.ecommerce.models.AuthUser;
 import com.ecommerce.models.User;
 import com.ecommerce.services.AuthService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -35,14 +36,17 @@ public class AuthController {
     }
 
     @PostMapping(value = "/login")
-    public ResponseEntity<User> login(@RequestBody AuthUser authUser) {
+    public ResponseEntity<User> login(@RequestBody AuthUser authUser, HttpSession session) {
         System.out.println("Login endpoint hit");
 
         try {
             User user = authService.login(authUser);
+            session.setAttribute("user", user);
             return ResponseEntity.status(HttpStatus.ACCEPTED).body(user);
         } catch (InvalidLoginException e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
         }
     }
+
+    // TODO: logout functionality
 }

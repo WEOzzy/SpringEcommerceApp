@@ -1,9 +1,11 @@
 package com.ecommerce.controllers;
 
+import com.ecommerce.annotations.Authorized;
 import com.ecommerce.models.CartItem;
 import com.ecommerce.models.Product;
 import com.ecommerce.models.User;
 import com.ecommerce.services.CartService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,23 +20,30 @@ public class CartController {
         this.cartService = cartService;
     }
 
-    @GetMapping
-    public ResponseEntity<Map<Product, Integer>> getCart(@RequestBody User user) {
+    @Authorized
+    @GetMapping // TODO: no longer need RequestBody
+    public ResponseEntity<Map<Product, Integer>> getCart(HttpSession session, @RequestBody User user) {
         System.out.println("Get cart endpoint hit");
-        return ResponseEntity.ok(cartService.getCart(user.getUserId()));
+        //((User)session.getAttribute("user")).getUserId()
+        return ResponseEntity.ok(cartService.getCart(((User)session.getAttribute("user")).getUserId()));
+//        return ResponseEntity.ok(cartService.getCart(user.getUserId()));
     }
 
-    @PostMapping(value = "/checkout")
-    public ResponseEntity<String> checkout(@RequestBody User user) {
+    @Authorized
+    @PostMapping(value = "/checkout") // TODO: no longer need RequestBody
+    public ResponseEntity<String> checkout(HttpSession session, @RequestBody User user) {
         // all this currently does is clear the cart
         System.out.println("Checkout endpoint hit");
-        cartService.clearCart(user.getUserId());
+        cartService.clearCart(((User)session.getAttribute("user")).getUserId());
+        //cartService.clearCart(user.getUserId());
         return ResponseEntity.ok("Checkout complete");
     }
 
-    @PostMapping(value = "/add")
-    public ResponseEntity<String> addItemToCart(@RequestBody CartItem item) {
-        User user = cartService.getCartUser(item.getUserId());
+    @Authorized
+    @PostMapping(value = "/add") // TODO: change RequestBody, CartItem no longer needs user id
+    public ResponseEntity<String> addItemToCart(HttpSession session, @RequestBody CartItem item) {
+        User user = cartService.getCartUser(((User)session.getAttribute("user")).getUserId());
+        //User user = cartService.getCartUser(item.getUserId());
         cartService.addCartItem(user, item.getProductId(), item.getQuantity());
         return ResponseEntity.ok("Successfully added to cart");
     }
