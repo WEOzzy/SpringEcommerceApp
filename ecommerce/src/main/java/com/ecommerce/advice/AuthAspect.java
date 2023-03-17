@@ -20,9 +20,8 @@ public class AuthAspect {
         this.req = req;
     }
 
-    @Around("@annotation(authorized")
+    @Around("@annotation(authorized)")
     public Object authenticate(ProceedingJoinPoint pjp, Authorized authorized) throws Throwable {
-
         HttpSession session = req.getSession(); // get the session or create one
         User user = (User) session.getAttribute("user");
 

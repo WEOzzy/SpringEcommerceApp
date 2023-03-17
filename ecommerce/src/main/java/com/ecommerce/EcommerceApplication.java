@@ -8,7 +8,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 							"com.ecommerce.daos, " +
 							"com.ecommerce.exceptions, " +
 							"com.ecommerce.models, " +
-							"com.ecommerce.services"
+							"com.ecommerce.services, " +
+							"com.ecommerce.advice, "	+
+							"com.ecommerce.annotations"
 					)
 
 public class EcommerceApplication {

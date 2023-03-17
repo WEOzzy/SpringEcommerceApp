@@ -48,5 +48,10 @@ public class AuthController {
         }
     }
 
-    // TODO: logout functionality
+    @PostMapping(value = "/logout")
+    public ResponseEntity<Void> logout(HttpSession session) {
+        session.removeAttribute("user");
+
+        return ResponseEntity.ok().build();
+    }
 }
